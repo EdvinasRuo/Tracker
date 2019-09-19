@@ -17,7 +17,6 @@
         </router-link> 
           if you are a new user.
       </p>
-      <p>Try it as a guest if you want to try it.</p>
     </div>
     </div>
   </body>
