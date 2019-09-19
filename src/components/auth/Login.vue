@@ -1,0 +1,74 @@
+<template>
+    <div class="login container">
+        <form class="card-panel" @submit.prevent="login">
+            <h2 class="center blue-grey-text">Login</h2>
+            <div class="field">
+                <label for="email">Email:</label>
+                <input type="email" name="email" v-model="email">
+            </div>
+            <div class="field">
+                <label for="password">Password:</label>
+                <input type="password" name="password" v-model="password">
+            </div>
+            <p v-if="feedback" class="errorMessage">{{feedback}}</p>
+            <div class="field">
+                <button class="btn blue-grey">Login</button>
+            </div>
+        </form>
+    </div>
+</template>
+
+<script>
+import firebase from 'firebase'
+
+export default {
+    name:'Login', 
+    data() {
+        return{
+            email: null,
+            password: null,
+            feedback: null
+        }
+    },
+    methods: { 
+        login() {
+            if(this.email && this.password) {
+                this.feedback=null
+                firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+                .then(cred => { 
+                    this.$router.push({name: 'CounterPage'})
+                    this.$router.push({params: { email: this.email}})
+                }).catch(err => {
+                    this.feedback = err.message
+                })
+
+            }else {
+                this.feedback="You must enter email and password"
+            }
+
+        }
+    }
+
+}
+</script>
+     
+<style>
+.login{
+    max-width: 500px;
+    margin-top: 60px; 
+}
+
+.login h2{
+    font-size: 2.4em; 
+}
+.login .field{
+    margin-bottom: 16px; 
+}
+
+.errorMessage {
+    background-color: #d32f2f;
+    color: white;
+    border-style: solid; 
+    padding-left: 1%;
+}
+</style>
